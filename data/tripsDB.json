@@ -1,0 +1,42 @@
+{
+    "trips":[
+        {
+            "id":"trip_1",
+            "name":"Viaje 1",
+            "date":"05/10/1990",
+            "places":["place_1", "place_2"]
+        }
+    ],
+    "places":[
+        {
+            "id":"place_1",
+            "name":"Place 1",
+            "places":["place_3", "place_4"]
+        },
+        {
+            "id":"place_2",
+            "name":"Place 2",
+            "places":["place_5", "place_6"]
+        },
+        {
+            "id":"place_3",
+            "name":"Place 3",
+            "places":[]
+        },
+        {
+            "id":"place_4",
+            "name":"Place 4",
+            "places":[]
+        },
+        {
+            "id":"place_5",
+            "name":"Place 5",
+            "places":[]
+        },
+        {
+            "id":"place_6",
+            "name":"Place 6",
+            "places":[]
+        }
+    ]
+}
