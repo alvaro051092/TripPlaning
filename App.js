@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, TouchableHighlight, StatusBar} from 'react-native';
+import Expo from 'expo';
 
 export default class App extends React.Component {
 
@@ -33,11 +34,15 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
+
+     
+        <View style={[styles.centrar_medio, {flex:1, backgroundColor:'green'}]}>
           <Text>Hi</Text>
         </View>
-
-        {this._contenido()}
+        <View style={{flex:10}}>
+          {this._contenido()}
+        </View>
+        
       </View>
     );
   }
@@ -62,8 +67,15 @@ class TripWithData extends React.Component {
 
   render() {
     return (
-      <View>
-        <View><Button title="Agregar 2" onPress={this.props.addTrip}></Button></View>
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 3 }}>
+          <ListTrips tripsData={this.props.tripsData}></ListTrips>
+        </View>
+
+        <View style={{ flex: 2 }}>
+          <Button title="Agregar 2" onPress={this.props.addTrip}>
+          </Button>
+        </View>
       </View>
     );
   }
@@ -81,6 +93,7 @@ class ListTrips extends React.Component {
   };
 
   _renderItem = ({ item }) => (
+
     <ListTripsItem
       id={item.id}
       onPressItem={this._onPressItem}
@@ -91,7 +104,7 @@ class ListTrips extends React.Component {
   render() {
     return (
       <FlatList
-        data={this.props.tripsData}
+        data={this.props.tripsData.trips}
         //extraData={this.state}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
@@ -111,7 +124,7 @@ class ListTripsItem extends React.Component {
         <TouchableHighlight
           onPress={() => this.props.onPressItem(this.props.id)}>
           <View style={{ backgroundColor: 'skyblue', height: 50 }}>
-            <Text>{this.props.name}</Text>
+            <Text>{this.props.title}</Text>
           </View>
         </TouchableHighlight>
 
@@ -129,7 +142,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    paddingTop: StatusBar.currentHeight
   },
+  centrar_medio:{
+    alignItems: 'center', 
+    justifyContent:'center'
+  }
 });
