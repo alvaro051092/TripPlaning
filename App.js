@@ -10,7 +10,10 @@ export default class App extends React.Component {
     var customData = require('./data/tripsDB.json');
 
     this.state = {
-      trips: customData
+      trips: customData,
+      screen: 'home',
+      trip_selected:'',
+      backVisible:'false'
     };
 
   }
@@ -21,22 +24,57 @@ export default class App extends React.Component {
   };
 
   _contenido() {
+    console.log("Screen " + this.state.screen)
+    switch(this.state.screen) {
+      case 'home':
+        return(this._loadHome());
+        break;
+      case 'on_trip':
+      return(this._loadTrip());
+        break;
+    }
+  };
+
+  _loadHome(){
+    console.log('Load home ' + this.state.trips.trips.length);
     if (this.state.trips.trips.length > 0) {
-      return (<TripWithData tripsData={this.state.trips} addTrip={this._addTrip}></TripWithData>)
+      return (<TripWithData tripsData={this.state.trips} addTrip={this._addTrip} clickOnTrip={this._clickOnTrip}></TripWithData>)
     }
     else {
       return (<TripNoData addTrip={this._addTrip}></TripNoData>)
     }
-  };
+  }
 
+  _loadTrip(){
+    return (<Text>Soy un viaje {this.state.trip_selected}</Text>)
+  }
 
+  _clickOnTrip = (id) => (this.clickOnTrip(id));
+
+  clickOnTrip(id){
+    console.log('click ' + id)
+    
+    this.setState({ trip_selected: id });
+    this.setState({ screen: 'on_trip' });
+    this.setState({ backVisible: 'true' });
+  }
+
+  _clickOnHome = () => (this.clickOnHome());
+
+  clickOnHome(){
+    
+    this.setState({ trip_selected: 0 });
+    this.setState({ screen: 'home' });
+    this.setState({ backVisible: 'false' });
+  }
 
   render() {
     return (
       <View style={styles.container}>
 
      
-        <View style={[styles.centrar_medio, {flex:1, backgroundColor:'green'}]}>
+        <View style={[styles.centrar_medio, {flex:1, backgroundColor:'green', flexDirection:'row'}]}>
+          <TouchableHighlight  onPress={() => this.clickOnHome()}><Text>Back</Text></TouchableHighlight>
           <Text>Hi</Text>
         </View>
         <View style={{flex:10}}>
@@ -69,7 +107,7 @@ class TripWithData extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 3 }}>
-          <ListTrips tripsData={this.props.tripsData}></ListTrips>
+          <ListTrips tripsData={this.props.tripsData} clickOnTrip={this.props.clickOnTrip}></ListTrips>
         </View>
 
         <View style={{ flex: 2 }}>
@@ -96,7 +134,7 @@ class ListTrips extends React.Component {
 
     <ListTripsItem
       id={item.id}
-      onPressItem={this._onPressItem}
+      onPressItem={this.props.clickOnTrip}
       title={item.name}
     />
   );
