@@ -4,7 +4,10 @@
             "id":"trip_1",
             "name":"Viaje 1",
             "date":"05/10/1990",
-            "places":["place_1", "place_2"]
+            "places":[
+                {"id":"place_1"}, 
+                {"id":"place_2"}
+            ]
         }
     ],
     "places":[

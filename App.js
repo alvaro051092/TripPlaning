@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList, TouchableHighlight, StatusBar} from 'react-native';
-import Expo from 'expo';
+import AppTrip from './components/AppTrip';
 
 export default class App extends React.Component {
 
@@ -13,7 +13,7 @@ export default class App extends React.Component {
       trips: customData,
       screen: 'home',
       trip_selected:'',
-      backVisible:'false'
+      backVisible:false
     };
 
   }
@@ -22,6 +22,13 @@ export default class App extends React.Component {
   _addTrip = () => {
     console.log("Add trip")
   };
+
+  _header(){
+    if(this.state.backVisible)
+    {
+      return(<TouchableHighlight style={{backgroundColor:'blue'}} onPress={() => this.clickOnHome()}><Text>Back</Text></TouchableHighlight>);
+    }
+  }
 
   _contenido() {
     console.log("Screen " + this.state.screen)
@@ -46,26 +53,26 @@ export default class App extends React.Component {
   }
 
   _loadTrip(){
-    return (<Text>Soy un viaje {this.state.trip_selected}</Text>)
+    return (<AppTrip trip={this.state.trip_selected}></AppTrip>)
   }
 
-  _clickOnTrip = (id) => (this.clickOnTrip(id));
+  _clickOnTrip = (item) => (this.clickOnTrip(item));
 
-  clickOnTrip(id){
-    console.log('click ' + id)
+  clickOnTrip(item){
+    console.log('click ' + item.id)
     
-    this.setState({ trip_selected: id });
+    this.setState({ trip_selected: item });
     this.setState({ screen: 'on_trip' });
-    this.setState({ backVisible: 'true' });
+    this.setState({ backVisible: true });
   }
 
   _clickOnHome = () => (this.clickOnHome());
 
   clickOnHome(){
     
-    this.setState({ trip_selected: 0 });
+    this.setState({ trip_selected: null });
     this.setState({ screen: 'home' });
-    this.setState({ backVisible: 'false' });
+    this.setState({ backVisible: false });
   }
 
   render() {
@@ -74,7 +81,8 @@ export default class App extends React.Component {
 
      
         <View style={[styles.centrar_medio, {flex:1, backgroundColor:'green', flexDirection:'row'}]}>
-          <TouchableHighlight  onPress={() => this.clickOnHome()}><Text>Back</Text></TouchableHighlight>
+          
+          {this._header()}
           <Text>Hi</Text>
         </View>
         <View style={{flex:10}}>
@@ -126,14 +134,11 @@ class ListTrips extends React.Component {
 
   _keyExtractor = (item, index) => item.id;
 
-  _onPressItem = (id) => {
-    console.log("Item press " + id)
-  };
-
   _renderItem = ({ item }) => (
 
     <ListTripsItem
       id={item.id}
+      item={item}
       onPressItem={this.props.clickOnTrip}
       title={item.name}
     />
@@ -160,7 +165,7 @@ class ListTripsItem extends React.Component {
       <View>
 
         <TouchableHighlight
-          onPress={() => this.props.onPressItem(this.props.id)}>
+          onPress={() => this.props.onPressItem(this.props.item)}>
           <View style={{ backgroundColor: 'skyblue', height: 50 }}>
             <Text>{this.props.title}</Text>
           </View>
