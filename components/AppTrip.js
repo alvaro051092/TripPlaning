@@ -1,28 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableHighlight, Button} from 'react-native';
+
 
 export default class AppTrip extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      placeSelected: null
+    };
+
   }
 
   _clickOnPlace = (item) => (this.clickOnPlace(item));
   clickOnPlace(item){
     console.log('click ' + item.id)
-    
-
+    //this.setState({ placeSelected: item });
+    this.props.goTo("Place", item, true, "Trip");
   }
 
+  _addPlace = () => {
+    this.props.goTo("PlaceAdd", null, true, "Trip");
+  };
 
   render() {
     return (
       <View >
-            <Text>Soy un viaje {this.props.trip.name}</Text>
-
+            <Text>Soy un viaje {this.props.data.name}</Text>
             <View>
-            <ListPlaces places={this.props.trip.places} clickOnPlace={this._clickOnPlace}></ListPlaces>
+                <ListPlaces places={this.props.data.places} clickOnPlace={this._clickOnPlace}></ListPlaces>
               </View>
+              <View>
+          <Button title="Agregar" onPress={this._addPlace}/>
+        </View>
       </View>
     );
   }
@@ -40,7 +51,7 @@ class ListPlaces extends React.Component {
       id={item.id}
       item={item}
       onPressItem={this.props.clickOnPlace}
-      title={item.id}
+      title={item.name}
     />
   );
 
